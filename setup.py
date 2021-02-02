@@ -21,7 +21,7 @@ dev_requirements = [
 pub_requirements = dev_requirements + ['twine>=3.2.0']
 
 setup(
-    name='pychronos',
+    name='python_chronos',
     version='0.1.0',
     description='Simple and easy to use time-related utility functions',
     long_description=long_description,
