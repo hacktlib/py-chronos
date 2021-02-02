@@ -26,7 +26,7 @@ setup(
     description='Simple and easy to use time-related utility functions',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/hacktlib/py-chronos/wiki',
+    url='https://github.com/hacktlib/py-chronos/',
     author='Hackt.app',
     author_email='opensource@hackt.app',
     classifiers=[
