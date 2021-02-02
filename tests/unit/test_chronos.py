@@ -63,7 +63,7 @@ def test_future_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
     assert response.second == dummy_utc_now_datetime.second + seconds_delta
 
 
-def test_test_future_utc_datetime_real():
+def test_future_utc_datetime_real():
     days_delta = 5
 
     future = chronos.future_utc_datetime(days=days_delta)
@@ -80,3 +80,38 @@ def test_future_utc_timestamp():
 
     assert type(response) is int
     assert response >= (now + days_in_seconds)
+
+
+@mock.patch('chronos.datetime.datetime')
+def test_past_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
+    datetime_mock.utcnow.return_value = dummy_utc_now_datetime
+
+    days_delta = 1
+    seconds_delta = 10
+
+    response = chronos.past_utc_datetime(
+        days=days_delta,
+        seconds=seconds_delta,
+    )
+
+    assert response.day == dummy_utc_now_datetime.day - days_delta
+    assert response.second == dummy_utc_now_datetime.second - seconds_delta
+
+
+def test_past_utc_datetime_real():
+    days_delta = 5
+
+    past = chronos.past_utc_datetime(days=days_delta)
+
+    assert isinstance(past, datetime.datetime)
+
+
+def test_past_utc_timestamp():
+    now = chronos.utc_timestamp()
+    days_delta = 5
+    days_in_seconds = days_delta * 24 * 60 * 60
+
+    response = chronos.past_utc_timestamp(days=days_delta)
+
+    assert type(response) is int
+    assert response >= (now - days_in_seconds)
