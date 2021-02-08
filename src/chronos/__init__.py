@@ -2,6 +2,8 @@ import calendar
 import datetime
 from typing import Optional
 
+from chronos import types, datetime_filter
+
 
 def future_utc_timestamp(**delta_kwargs) -> int:
     return utc_timestamp(future_utc_datetime(**delta_kwargs))
@@ -28,3 +30,22 @@ def utc_timestamp(datetime_utc_now: Optional[datetime.datetime] = None) -> int:
 
 def utc_now() -> datetime.datetime:
     return datetime.datetime.utcnow()
+
+
+def round_datetime_down(
+    dt: datetime.datetime,
+    round_attr: types.DatetimeAttr,
+) -> datetime.datetime:
+    order = types.DatetimeAttrOrder()
+    threshold = order[round_attr]
+
+    return datetime.datetime(
+        **datetime_filter.reset_attributes(
+            dt=dt,
+            attr_names=[
+                attribute_name
+                for attribute_name, position in order.items()
+                if position < threshold
+            ],
+        )
+    )

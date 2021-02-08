@@ -48,8 +48,8 @@ def test_utc_timestamp_real():
 
 
 @mock.patch('chronos.datetime.datetime')
-def test_future_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
-    datetime_mock.utcnow.return_value = dummy_utc_now_datetime
+def test_future_utc_datetime_mocked(datetime_mock, dummy_datetime):
+    datetime_mock.utcnow.return_value = dummy_datetime
 
     days_delta = 1
     seconds_delta = 10
@@ -59,8 +59,8 @@ def test_future_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
         seconds=seconds_delta,
     )
 
-    assert response.day == dummy_utc_now_datetime.day + days_delta
-    assert response.second == dummy_utc_now_datetime.second + seconds_delta
+    assert response.day == dummy_datetime.day + days_delta
+    assert response.second == dummy_datetime.second + seconds_delta
 
 
 def test_future_utc_datetime_real():
@@ -83,8 +83,8 @@ def test_future_utc_timestamp():
 
 
 @mock.patch('chronos.datetime.datetime')
-def test_past_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
-    datetime_mock.utcnow.return_value = dummy_utc_now_datetime
+def test_past_utc_datetime_mocked(datetime_mock, dummy_datetime):
+    datetime_mock.utcnow.return_value = dummy_datetime
 
     days_delta = 1
     seconds_delta = 10
@@ -94,8 +94,8 @@ def test_past_utc_datetime_mocked(datetime_mock, dummy_utc_now_datetime):
         seconds=seconds_delta,
     )
 
-    assert response.day == dummy_utc_now_datetime.day - days_delta
-    assert response.second == dummy_utc_now_datetime.second - seconds_delta
+    assert response.day == dummy_datetime.day - days_delta
+    assert response.second == dummy_datetime.second - seconds_delta
 
 
 def test_past_utc_datetime_real():
@@ -115,3 +115,31 @@ def test_past_utc_timestamp():
 
     assert type(response) is int
     assert response >= (now - days_in_seconds)
+
+
+def test_round_datetime_down(dummy_datetime):
+    rounded = chronos.round_datetime_down(
+        dt=dummy_datetime,
+        round_attr=chronos.types.DatetimeAttr('hour'),
+    )
+
+    assert rounded.year == dummy_datetime.year
+    assert rounded.month == dummy_datetime.month
+    assert rounded.day == dummy_datetime.day
+    assert rounded.hour == dummy_datetime.hour
+    assert rounded.minute == 0
+    assert rounded.second == 0
+    assert rounded.microsecond == 0
+
+    rounded = chronos.round_datetime_down(
+        dt=dummy_datetime,
+        round_attr=chronos.types.DatetimeAttr('minute'),
+    )
+
+    assert rounded.year == dummy_datetime.year
+    assert rounded.month == dummy_datetime.month
+    assert rounded.day == dummy_datetime.day
+    assert rounded.hour == dummy_datetime.hour
+    assert rounded.minute == dummy_datetime.minute
+    assert rounded.second == 0
+    assert rounded.microsecond == 0

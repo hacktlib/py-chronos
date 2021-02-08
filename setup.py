@@ -22,8 +22,8 @@ pub_requirements = dev_requirements + ['twine>=3.2.0']
 
 setup(
     name='python_chronos',
-    version='0.1.0',
-    description='Simple and easy to use time-related utility functions',
+    version='0.2.0',
+    description='Simple and easy to use date & time-related utility functions',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/hacktlib/py-chronos/',
